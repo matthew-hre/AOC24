@@ -8,10 +8,33 @@ class Day01(Template):
         self.day = 1
         super().__init__(self.day)
 
-        data = self.get_data().strip().split("\n")
+        self.add_test_case(
+            "part1",
+            """3   4
+4   3
+2   5
+1   3
+3   9
+3   3""",
+            11,
+        )
+
+        self.add_test_case(
+            "part2",
+            """3   4
+4   3
+2   5
+1   3
+3   9
+3   3""",
+            31,
+        )
+
+
+    def parse_data(self, raw_data):
+        data = raw_data.strip().split("\n")
         data = [x.split("   ") for x in data]
-        data = list(zip(*data[::-1]))
-        self.set_data(data)
+        return list(zip(*data[::-1]))
 
 
     def part1(self):

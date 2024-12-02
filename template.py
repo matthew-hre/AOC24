@@ -33,13 +33,48 @@ class Template:
         """Initializes the template class"""
         self.day = day
         self.link = f"https://adventofcode.com/2024/day/{day}"
+        self.test_cases = {"part1": [], "part2": []}
         if not file_location:
-            self.__data = get_input_data(day)
+            raw_data = get_input_data(day)
         else:
-            f = open(file_location, "r")
-            data = f.read()
-            f.close()
-            self.__data = data
+            with open(file_location, "r") as f:
+                raw_data = f.read()
+        self.set_data(self.parse_data(raw_data))
+
+
+    def add_test_case(self, part: str, input_data: str, expected_output: int):
+        """Adds a unit test for a specific part."""
+        if part not in self.test_cases:
+            raise ValueError(f"Unknown part '{part}'. Use 'part1' or 'part2'.")
+        self.test_cases[part].append((input_data, expected_output))
+
+
+    def run_tests(self) -> None:
+        """Runs all test cases for part1 and part2."""
+        for part in ["part1", "part2"]:
+            self.run_part_tests(part)
+
+    def run_part_tests(self, part: str) -> None:
+        """Runs test cases for a specific part."""
+        if part not in self.test_cases:
+            raise ValueError(f"Unknown part '{part}'. Use 'part1' or 'part2'.")
+        for idx, (input_data, expected_output) in enumerate(self.test_cases[part]):
+            # Parse the test input using the day's parse_data method
+            parsed_data = self.parse_data(input_data)
+            self.set_data(parsed_data)
+
+            result = getattr(self, part)()  # Calls part1 or part2 dynamically
+            assert result == expected_output, (
+                f"Test {idx + 1} for {part} failed: "
+                f"Expected {expected_output}, got {result}."
+            )
+        print(f"All tests for {part} passed!")
+
+
+    def parse_data(self, raw_data):
+        """Default data parser. Override this in each day's class if needed."""
+        return raw_data.strip()
+
 
     def get_data(self) -> Any:
         """Gets the data for the day
