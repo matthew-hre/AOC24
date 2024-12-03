@@ -34,7 +34,7 @@ def run_day_tests(day: int):
                         f"Test {idx} failed: Expected {expected_output}, got {result}."
                     )
                     print(f"    {bcolors.OKGREEN}✅ Test {idx} Passed!{bcolors.ENDC}")
-                print(f"    {bcolors.OKGREEN}✅ Final Output: Didn't Crash!{bcolors.ENDC}")
+                print(f"    {bcolors.OKGREEN}✅ Final Output: Didn't Crash!{bcolors.ENDC}\n")
             except AssertionError as e:
                 print(f"    {bcolors.FAIL}❌ {e}{bcolors.ENDC}")
     except ModuleNotFoundError:
